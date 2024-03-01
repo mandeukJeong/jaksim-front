@@ -1,9 +1,11 @@
-import React, { useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../../api/auth';
+import { getCookie, setCookie, removeCookie } from '../../utils/cookie';
+import jaksimApi from '../../api';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -44,6 +46,7 @@ const AutoWrap = styled.div`
   display: flex;
   gap: 5px;
   cursor: pointer;
+  color: ${(props) => props.color};
 `;
 
 const LoginButton = styled.button`
@@ -56,6 +59,14 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
+const ErrorWrap = styled.div`
+  width: 100%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #f05650;
+`;
+
 const loginReducer = (state, action) => {
   return {
     ...state,
@@ -64,11 +75,24 @@ const loginReducer = (state, action) => {
 };
 
 const LoginComponent = () => {
+  const navigate = useNavigate();
+  const [autoColor, setAutoColor] = useState('#9e9e9e');
+  const [isAutoLogin, setIsAutoLogin] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [state, dispatch] = useReducer(loginReducer, {
     email: '',
     password: '',
   });
   const { email, password } = state;
+
+  const changeAutoStatus = () => {
+    // 자동로그인 색상 변경
+    setAutoColor((prevState) =>
+      prevState === '#9e9e9e' ? '#684FCA' : '#9e9e9e'
+    );
+    // 자동로그인 상태 값 변경
+    setIsAutoLogin((prevState) => !prevState);
+  };
 
   const onChange = (e) => {
     dispatch(e.target);
@@ -76,10 +100,48 @@ const LoginComponent = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    login(email, password).then((response) => {
-      console.log(response);
-    });
+
+    // 이메일, 비밀번호 미입력 시
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      setErrorMessage('이메일 또는 비밀번호를 입력해주세요.');
+      return;
+    }
+    // 이메일, 비밀번호 형식에 맞지 않을 경우
+
+    // 자동로그인 체크 로직 (7일간)
+    if (isAutoLogin) {
+      setCookie('autoLogin', email, { path: '/', maxAge: 60 * 60 * 24 * 7 });
+    } else {
+      removeCookie('autoLogin', { path: '/' });
+    }
+    login(email, password)
+      .then((response) => {
+        if (response.status === 200) {
+          setErrorMessage(null);
+          jaksimApi.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${response.data.accessToken}`;
+          navigate('/');
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e.response.status === 401) {
+          setErrorMessage('존재하지 않는 계정입니다.');
+        } else {
+          setErrorMessage('로그인 실패');
+        }
+      });
   };
+
+  // 자동 로그인 여부 쿠키 값 꺼내기
+  useEffect(() => {
+    if (getCookie('autoLogin')) {
+      setAutoColor('#684FCA');
+      setIsAutoLogin(true);
+      dispatch({ name: 'email', value: getCookie('autoLogin') });
+    }
+  }, []);
 
   return (
     <FormWrap>
@@ -96,11 +158,12 @@ const LoginComponent = () => {
           value={password}
           type="password"
           placeholder="비밀번호"
+          autoComplete="off"
           onChange={onChange}
         />
       </InputWrap>
       <OptionWrap>
-        <AutoWrap>
+        <AutoWrap color={autoColor} onClick={changeAutoStatus}>
           <FontAwesomeIcon icon={faCircleCheck} />
           <p>자동로그인</p>
         </AutoWrap>
@@ -109,6 +172,7 @@ const LoginComponent = () => {
       <LoginButton type="submit" onClick={onSubmit}>
         로그인
       </LoginButton>
+      {errorMessage && <ErrorWrap>{errorMessage}</ErrorWrap>}
     </FormWrap>
   );
 };
