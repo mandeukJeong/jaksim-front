@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
+import { login } from '../../api/auth';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -55,12 +56,48 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
+const loginReducer = (state, action) => {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+};
+
 const LoginComponent = () => {
+  const [state, dispatch] = useReducer(loginReducer, {
+    email: '',
+    password: '',
+  });
+  const { email, password } = state;
+
+  const onChange = (e) => {
+    dispatch(e.target);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    login(email, password).then((response) => {
+      console.log(response);
+    });
+  };
+
   return (
     <FormWrap>
       <InputWrap>
-        <LoginInput type="email" placeholder="이메일" />
-        <LoginInput type="password" placeholder="비밀번호" />
+        <LoginInput
+          name="email"
+          value={email}
+          type="email"
+          placeholder="이메일"
+          onChange={onChange}
+        />
+        <LoginInput
+          name="password"
+          value={password}
+          type="password"
+          placeholder="비밀번호"
+          onChange={onChange}
+        />
       </InputWrap>
       <OptionWrap>
         <AutoWrap>
@@ -69,7 +106,9 @@ const LoginComponent = () => {
         </AutoWrap>
         <Link to="/">비밀번호찾기</Link>
       </OptionWrap>
-      <LoginButton type="submit">로그인</LoginButton>
+      <LoginButton type="submit" onClick={onSubmit}>
+        로그인
+      </LoginButton>
     </FormWrap>
   );
 };
