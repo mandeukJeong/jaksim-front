@@ -8,7 +8,7 @@ import RegisterComponent from '../../components/auth/RegisterComponent';
 
 const RegisterWrap = styled.div`
   width: 100%;
-  padding: 30px 0;
+  padding: 50px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +21,7 @@ const ContentWrap = styled.div`
   text-align: center;
 
   img {
-    max-width: 250px;
+    max-width: 300px;
     width: 100%;
   }
 

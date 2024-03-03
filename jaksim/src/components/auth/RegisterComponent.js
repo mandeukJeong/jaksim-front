@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
+import { register } from '../../api/auth';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -85,13 +86,112 @@ const ErrorWrap = styled.div`
   color: #f05650;
 `;
 
+const registerReducer = (state, action) => {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+};
+
 const RegisterComponent = () => {
+  const [checkColor, setCheckColor] = useState({
+    serviceCheck: '#737373',
+    personalCheck: '#737373',
+    eventCheck: '#737373',
+  });
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [autoEmailText, setAutoEmailText] = useState('');
+  const [state, dispatch] = useReducer(registerReducer, {
+    email: '',
+    nickname: '',
+    password: '',
+    passwordConfirm: '',
+    serviceCheck: false,
+    personalCheck: false,
+    eventCheck: false,
+  });
+
+  const {
+    email,
+    nickname,
+    password,
+    passwordConfirm,
+    serviceCheck,
+    personalCheck,
+    eventCheck,
+  } = state;
+
+  const onChange = (e) => {
+    dispatch(e.target);
+  };
+
+  const onClick = (checkTarget) => {
+    setCheckColor((prevState) => {
+      return {
+        ...prevState,
+        [checkTarget]:
+          checkColor[checkTarget] === '#737373' ? '#684FCA' : '#737373',
+      };
+    });
+    dispatch({ name: checkTarget, value: !state[checkTarget] });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    // input 빈칸 존재시
+    if (
+      Object.values({ email, nickname, password, passwordConfirm }).some(
+        (value) => value === ''
+      )
+    ) {
+      setErrorMessage('빈칸을 모두 입력해주세요.');
+      return;
+    }
+
+    // 이메일, 비밀번호 형식 검증
+    const sendForEmail = autoEmailText === '' ? email : email + autoEmailText;
+
+    // 비밀번호 확인이 일치하지 않을 경우
+    if (password !== passwordConfirm) {
+      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 서비스 이용약관, 개인정보 수집 동의 체크 안했을 경우
+    if (
+      Object.values({ serviceCheck, personalCheck }).some(
+        (value) => value === false
+      )
+    ) {
+      setErrorMessage('필수 동의 항목을 체크해주세요.');
+      return;
+    }
+
+    register(email, nickname, password, serviceCheck, personalCheck, eventCheck)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <FormWrap>
       <InputWrap>
         <EmailWrap>
-          <RegisterInput type="text" placeholder="이메일" />
-          <select>
+          <RegisterInput
+            name="email"
+            value={email}
+            type="text"
+            placeholder="이메일"
+            onChange={onChange}
+          />
+          <select
+            value={autoEmailText}
+            onChange={(e) => setAutoEmailText(e.target.value)}
+          >
             <option value={''}>직접입력</option>
             <option value={'@naver.com'}>@naver.com</option>
             <option value={'@gmail.com'}>@gmail.com</option>
@@ -99,35 +199,60 @@ const RegisterComponent = () => {
             <option value={'@daum.com'}>@daum.com</option>
           </select>
         </EmailWrap>
-
-        <RegisterInput type="text" placeholder="닉네임" />
         <RegisterInput
+          name="nickname"
+          value={nickname}
+          type="text"
+          placeholder="닉네임"
+          onChange={onChange}
+        />
+        <RegisterInput
+          name="password"
+          value={password}
           type="password"
           placeholder="비밀번호"
           autoComplete="off"
+          onChange={onChange}
         />
         <RegisterInput
+          name="passwordConfirm"
+          value={passwordConfirm}
           type="password"
           placeholder="비밀번호 확인"
           autoComplete="off"
+          onChange={onChange}
         />
       </InputWrap>
       <OptionWrap>
-        <CheckWrap>
+        <CheckWrap
+          color={checkColor.serviceCheck}
+          value={serviceCheck}
+          onClick={() => onClick('serviceCheck')}
+        >
           <FontAwesomeIcon icon={faCircleCheck} />
           <p>서비스 이용약관에 동의합니다. (필수)</p>
         </CheckWrap>
-        <CheckWrap>
+        <CheckWrap
+          color={checkColor.personalCheck}
+          value={personalCheck}
+          onClick={() => onClick('personalCheck')}
+        >
           <FontAwesomeIcon icon={faCircleCheck} />
           <p>개인정보 수집 및 이용에 동의합니다. (필수)</p>
         </CheckWrap>
-        <CheckWrap>
+        <CheckWrap
+          color={checkColor.eventCheck}
+          value={eventCheck}
+          onClick={() => onClick('eventCheck')}
+        >
           <FontAwesomeIcon icon={faCircleCheck} />
           <p>이벤트 정보등의 마케팅 수신에 동의합니다. (선택)</p>
         </CheckWrap>
       </OptionWrap>
-      {/* <ErrorWrap>빈칸을 모두 입력해주세요.</ErrorWrap> */}
-      <RegisterButton type="submit">회원가입</RegisterButton>
+      {errorMessage && <ErrorWrap>{errorMessage}</ErrorWrap>}
+      <RegisterButton type="submit" onClick={onSubmit}>
+        회원가입
+      </RegisterButton>
     </FormWrap>
   );
 };
