@@ -118,6 +118,7 @@ const LoginComponent = () => {
       .then((response) => {
         if (response.status === 200) {
           setErrorMessage(null);
+          localStorage.setItem('token', response.data.accessToken);
           jaksimApi.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${response.data.accessToken}`;
@@ -127,7 +128,7 @@ const LoginComponent = () => {
       .catch((e) => {
         console.log(e);
         if (e.response.status === 401) {
-          setErrorMessage('존재하지 않는 계정입니다.');
+          setErrorMessage(e.response.data);
         } else {
           setErrorMessage('로그인 실패');
         }
