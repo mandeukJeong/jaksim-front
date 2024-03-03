@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { register } from '../../api/auth';
+import { useNavigate } from 'react-router-dom';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -94,6 +95,7 @@ const registerReducer = (state, action) => {
 };
 
 const RegisterComponent = () => {
+  const navigate = useNavigate();
   const [checkColor, setCheckColor] = useState({
     serviceCheck: '#737373',
     personalCheck: '#737373',
@@ -168,12 +170,29 @@ const RegisterComponent = () => {
       return;
     }
 
-    register(email, nickname, password, serviceCheck, personalCheck, eventCheck)
+    register(
+      sendForEmail,
+      nickname,
+      password,
+      serviceCheck,
+      personalCheck,
+      eventCheck
+    )
       .then((response) => {
-        console.log(response);
+        if (response.status === 201) {
+          setErrorMessage(null);
+          // 추후 모달창으로 변경
+          alert('회원가입 성공');
+          navigate('/login');
+        }
       })
       .catch((e) => {
-        console.log(e);
+        // 중복 계정 존재
+        if (e.response.status === 400) {
+          setErrorMessage(e.response.data.error);
+        } else {
+          setErrorMessage('회원가입 실패');
+        }
       });
   };
 
