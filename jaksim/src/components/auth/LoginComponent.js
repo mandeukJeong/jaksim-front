@@ -168,7 +168,7 @@ const LoginComponent = () => {
           <FontAwesomeIcon icon={faCircleCheck} />
           <p>아이디 저장</p>
         </SaveWrap>
-        <Link to="/">비밀번호찾기</Link>
+        <Link to="/findpw">비밀번호찾기</Link>
       </OptionWrap>
       <LoginButton type="submit" onClick={onSubmit}>
         로그인
