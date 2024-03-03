@@ -42,7 +42,7 @@ const OptionWrap = styled.div`
   }
 `;
 
-const AutoWrap = styled.div`
+const SaveWrap = styled.div`
   display: flex;
   gap: 5px;
   cursor: pointer;
@@ -76,8 +76,8 @@ const loginReducer = (state, action) => {
 
 const LoginComponent = () => {
   const navigate = useNavigate();
-  const [autoColor, setAutoColor] = useState('#9e9e9e');
-  const [isAutoLogin, setIsAutoLogin] = useState(false);
+  const [saveColor, setSaveColor] = useState('#9e9e9e');
+  const [isIdSave, setIsIdSave] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [state, dispatch] = useReducer(loginReducer, {
     email: '',
@@ -85,13 +85,13 @@ const LoginComponent = () => {
   });
   const { email, password } = state;
 
-  const changeAutoStatus = () => {
-    // 자동로그인 색상 변경
-    setAutoColor((prevState) =>
+  const changeSaveStatus = () => {
+    // 아이디 저장 색상 변경
+    setSaveColor((prevState) =>
       prevState === '#9e9e9e' ? '#684FCA' : '#9e9e9e'
     );
-    // 자동로그인 상태 값 변경
-    setIsAutoLogin((prevState) => !prevState);
+    // 아이디 저장 상태 값 변경
+    setIsIdSave((prevState) => !prevState);
   };
 
   const onChange = (e) => {
@@ -108,11 +108,11 @@ const LoginComponent = () => {
     }
     // 이메일, 비밀번호 형식에 맞지 않을 경우
 
-    // 자동로그인 체크 로직 (7일간)
-    if (isAutoLogin) {
-      setCookie('autoLogin', email, { path: '/', maxAge: 60 * 60 * 24 * 7 });
+    // 아이디 저장 체크 로직 (7일간)
+    if (isIdSave) {
+      setCookie('idSave', email, { path: '/', maxAge: 60 * 60 * 24 * 7 });
     } else {
-      removeCookie('autoLogin', { path: '/' });
+      removeCookie('idSave', { path: '/' });
     }
     login(email, password)
       .then((response) => {
@@ -134,12 +134,12 @@ const LoginComponent = () => {
       });
   };
 
-  // 자동 로그인 여부 쿠키 값 꺼내기
+  // 아이디 저장 여부 쿠키 값 꺼내기
   useEffect(() => {
-    if (getCookie('autoLogin')) {
-      setAutoColor('#684FCA');
-      setIsAutoLogin(true);
-      dispatch({ name: 'email', value: getCookie('autoLogin') });
+    if (getCookie('idSave')) {
+      setSaveColor('#684FCA');
+      setIsIdSave(true);
+      dispatch({ name: 'email', value: getCookie('idSave') });
     }
   }, []);
 
@@ -163,10 +163,10 @@ const LoginComponent = () => {
         />
       </InputWrap>
       <OptionWrap>
-        <AutoWrap color={autoColor} onClick={changeAutoStatus}>
+        <SaveWrap color={saveColor} onClick={changeSaveStatus}>
           <FontAwesomeIcon icon={faCircleCheck} />
-          <p>자동로그인</p>
-        </AutoWrap>
+          <p>아이디 저장</p>
+        </SaveWrap>
         <Link to="/">비밀번호찾기</Link>
       </OptionWrap>
       <LoginButton type="submit" onClick={onSubmit}>
