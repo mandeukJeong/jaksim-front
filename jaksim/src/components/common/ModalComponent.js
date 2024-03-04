@@ -1,0 +1,52 @@
+import React from 'react';
+import styled from 'styled-components';
+
+const ModalWrap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ContentWrap = styled.div`
+  position: absolute;
+  width: 60%;
+  max-width: 800px;
+  background-color: white;
+  text-align: center;
+  padding: 30px 30px;
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
+
+  p {
+    padding: 15px 0 30px 0;
+    font-size: 14px;
+    color: black;
+  }
+
+  button {
+    width: 100%;
+    background-color: black;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+  }
+`;
+
+const ModalComponent = () => {
+  return (
+    <ModalWrap>
+      <ContentWrap>
+        <p>이메일이 전송 되었습니다.</p>
+        <button>확인</button>
+      </ContentWrap>
+    </ModalWrap>
+  );
+};
+
+export default ModalComponent;
