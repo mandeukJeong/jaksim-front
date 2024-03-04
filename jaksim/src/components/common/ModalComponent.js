@@ -47,9 +47,17 @@ const ModalComponent = () => {
   const modalContent = useSelector((state) => state.modal);
 
   const onClick = () => {
-    if (modalContent.subject === 'findpw') {
-      dispatch(onModalShow(false));
-      navigate('/changepw');
+    switch (modalContent.subject) {
+      case 'findpw':
+        dispatch(onModalShow(false));
+        navigate('/changepw');
+        break;
+      case 'changepw':
+        dispatch(onModalShow(false));
+        navigate('/login');
+        break;
+      default:
+        break;
     }
   };
 

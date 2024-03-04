@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Logo from './../../assets/img/logo.png';
 import ChangePwComponent from '../../components/auth/ChangePwComponent';
+import ModalComponent from '../../components/common/ModalComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeModalText } from '../../store/modal';
 
 const ChangePwWrap = styled.div`
   width: 100%;
@@ -38,17 +41,32 @@ const GuideMessage = styled.p`
 `;
 
 const ChangePwPage = () => {
+  const dispatch = useDispatch();
+  const isModalShow = useSelector((state) => state.modal.isShow);
+
+  useEffect(() => {
+    dispatch(
+      changeModalText({
+        subject: 'changepw',
+        message: '비밀번호 변경이 완료되었습니다.',
+        btnText: '확인',
+      })
+    );
+  }, [dispatch]);
   return (
-    <ChangePwWrap>
-      <ContentWrap>
-        <Link to="/">
-          <img src={Logo} alt="홈으로" />
-        </Link>
-        <h3>비밀번호 변경</h3>
-        <GuideMessage>입력하신 새 비밀번호로 변경 됩니다.</GuideMessage>
-        <ChangePwComponent />
-      </ContentWrap>
-    </ChangePwWrap>
+    <>
+      {isModalShow && <ModalComponent />}
+      <ChangePwWrap>
+        <ContentWrap>
+          <Link to="/">
+            <img src={Logo} alt="홈으로" />
+          </Link>
+          <h3>비밀번호 변경</h3>
+          <GuideMessage>입력하신 새 비밀번호로 변경 됩니다.</GuideMessage>
+          <ChangePwComponent />
+        </ContentWrap>
+      </ChangePwWrap>
+    </>
   );
 };
 

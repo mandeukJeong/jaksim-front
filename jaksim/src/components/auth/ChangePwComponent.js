@@ -1,5 +1,8 @@
 import React, { useReducer, useState } from 'react';
 import styled from 'styled-components';
+import { changePassword } from '../../api/auth';
+import { onModalShow } from '../../store/modal';
+import { useDispatch } from 'react-redux';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -51,6 +54,7 @@ const changePwReducer = (state, action) => {
 };
 
 const ChangePwComponent = () => {
+  const modalDispatch = useDispatch();
   const [state, dispatch] = useReducer(changePwReducer, {
     password: '',
     passwordConfirm: '',
@@ -72,6 +76,21 @@ const ChangePwComponent = () => {
       setErrorMessage('비밀번호가 일치하지 않습니다.');
       return;
     }
+
+    changePassword(password)
+      .then((response) => {
+        if (response.status === 200) {
+          setErrorMessage(null);
+          modalDispatch(onModalShow(true));
+        }
+      })
+      .catch((e) => {
+        if (e.response.status === 400) {
+          setErrorMessage(e.response.data.message);
+        } else {
+          setErrorMessage('비밀번호 변경 실패');
+        }
+      });
   };
 
   const [errorMessage, setErrorMessage] = useState(null);

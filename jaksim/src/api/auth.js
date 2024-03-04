@@ -33,3 +33,8 @@ export const checkAuth = async (verifyNumber) => {
   const response = await jaksimApi.post('/user/auth', { verifyNumber });
   return response;
 };
+
+export const changePassword = async (password) => {
+  const response = await jaksimApi.put('/user/password', { password });
+  return response;
+};
