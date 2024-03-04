@@ -50,6 +50,9 @@ const FindPwComponent = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    // TODO: 이메일 검증 테스트
+
     findPw(email)
       .then((response) => {
         if (response.status === 200) {

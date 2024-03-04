@@ -106,7 +106,7 @@ const LoginComponent = () => {
       setErrorMessage('이메일 또는 비밀번호를 입력해주세요.');
       return;
     }
-    // 이메일, 비밀번호 형식에 맞지 않을 경우
+    // TODO: 이메일, 비밀번호 형식에 맞지 않을 경우
 
     // 아이디 저장 체크 로직 (7일간)
     if (isIdSave) {

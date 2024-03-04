@@ -151,7 +151,7 @@ const RegisterComponent = () => {
       return;
     }
 
-    // 이메일, 비밀번호 형식 검증
+    // TODO: 이메일, 비밀번호 형식 검증
     const sendForEmail = autoEmailText === '' ? email : email + autoEmailText;
 
     // 비밀번호 확인이 일치하지 않을 경우
@@ -181,7 +181,7 @@ const RegisterComponent = () => {
       .then((response) => {
         if (response.status === 201) {
           setErrorMessage(null);
-          // 추후 모달창으로 변경
+          // TODO: 추후 모달창으로 변경
           alert('회원가입 성공');
           navigate('/login');
         }
