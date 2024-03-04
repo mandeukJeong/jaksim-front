@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { findPw } from '../../api/auth';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -42,6 +43,25 @@ const ErrorWrap = styled.div`
 
 const FindPwComponent = () => {
   const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    findPw(email)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+        }
+      })
+      .catch((e) => {
+        if (e.response.status === 404) {
+          setErrorMessage(e.response.data.error);
+        } else {
+          setErrorMessage('인증번호 전송 실패');
+        }
+      });
+  };
 
   return (
     <FormWrap>
@@ -58,10 +78,11 @@ const FindPwComponent = () => {
         type="submit"
         color={email.length > 0 ? '#000000' : '#DDDDDD'}
         cursor={email.length > 0 ? 'pointer' : 'default'}
+        onClick={onSubmit}
       >
         안내메일 전송
       </FindPwButton>
-      {/* <ErrorWrap>존재하지 않는 이메일입니다.</ErrorWrap> */}
+      <ErrorWrap>{errorMessage}</ErrorWrap>
     </FormWrap>
   );
 };

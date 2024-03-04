@@ -23,3 +23,8 @@ export const register = async (
   });
   return response;
 };
+
+export const findPw = async (email) => {
+  const response = await jaksimApi.post('/user/email', { email });
+  return response;
+};
