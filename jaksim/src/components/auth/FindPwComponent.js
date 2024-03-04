@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { onModalShow } from '../../store/modal';
 import { findPw } from '../../api/auth';
 
 const FormWrap = styled.form`
@@ -42,16 +44,16 @@ const ErrorWrap = styled.div`
 `;
 
 const FindPwComponent = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     findPw(email)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response);
+          dispatch(onModalShow(true));
         }
       })
       .catch((e) => {

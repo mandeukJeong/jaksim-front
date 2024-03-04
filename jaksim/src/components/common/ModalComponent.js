@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { onModalShow } from '../../store/modal';
 
 const ModalWrap = styled.div`
   position: absolute;
@@ -40,13 +42,22 @@ const ContentWrap = styled.div`
 `;
 
 const ModalComponent = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const modalContent = useSelector((state) => state.modal);
+
+  const onClick = () => {
+    if (modalContent.subject === 'findpw') {
+      dispatch(onModalShow(false));
+      navigate('/changepw');
+    }
+  };
 
   return (
     <ModalWrap>
       <ContentWrap>
         <p>{modalContent.message}</p>
-        <button>{modalContent.btnText}</button>
+        <button onClick={onClick}>{modalContent.btnText}</button>
       </ContentWrap>
     </ModalWrap>
   );

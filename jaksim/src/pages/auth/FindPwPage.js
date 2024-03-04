@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Logo from './../../assets/img/logo.png';
 import FindPwComponent from '../../components/auth/FindPwComponent';
@@ -42,16 +42,21 @@ const GuideMessage = styled.p`
 
 const FindPwPage = () => {
   const dispatch = useDispatch();
+  const isModalShow = useSelector((state) => state.modal.isShow);
 
   useEffect(() => {
     dispatch(
-      changeModalText({ message: '이메일이 전송 되었습니다.', btnText: '확인' })
+      changeModalText({
+        subject: 'findpw',
+        message: '이메일이 전송 되었습니다.',
+        btnText: '확인',
+      })
     );
   }, [dispatch]);
 
   return (
     <>
-      <ModalComponent />
+      {isModalShow && <ModalComponent />}
       <FindPwWrap>
         <ContentWrap>
           <Link to="/">
