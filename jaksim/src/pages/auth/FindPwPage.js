@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Logo from './../../assets/img/logo.png';
 import FindPwComponent from '../../components/auth/FindPwComponent';
 import ModalComponent from '../../components/common/ModalComponent';
-import { changModalText } from '../../store/modal';
+import { changeModalText } from '../../store/modal';
 
 const FindPwWrap = styled.div`
   width: 100%;
@@ -45,7 +45,7 @@ const FindPwPage = () => {
 
   useEffect(() => {
     dispatch(
-      changModalText({ message: '이메일이 전송 되었습니다.', btnText: '확인' })
+      changeModalText({ message: '이메일이 전송 되었습니다.', btnText: '확인' })
     );
   }, [dispatch]);
 

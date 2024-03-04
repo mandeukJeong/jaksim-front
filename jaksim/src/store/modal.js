@@ -7,13 +7,13 @@ const modal = createSlice({
     btnText: '',
   },
   reducers: {
-    changModalText(state, { payload: { message, btnText } }) {
+    changeModalText(state, { payload: { message, btnText } }) {
       state.message = message;
       state.btnText = btnText;
     },
   },
 });
 
-export const { changModalText } = modal.actions;
+export const { changeModalText } = modal.actions;
 
 export default modal;
