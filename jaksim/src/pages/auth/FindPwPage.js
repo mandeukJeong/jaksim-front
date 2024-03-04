@@ -48,7 +48,7 @@ const FindPwPage = () => {
     dispatch(
       changeModalText({
         subject: 'findpw',
-        message: '이메일이 전송 되었습니다.',
+        message: '인증에 성공하였습니다.',
         btnText: '확인',
       })
     );

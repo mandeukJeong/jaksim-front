@@ -28,3 +28,8 @@ export const findPw = async (email) => {
   const response = await jaksimApi.post('/user/email', { email });
   return response;
 };
+
+export const checkAuth = async (verifyNumber) => {
+  const response = await jaksimApi.post('/user/auth', { verifyNumber });
+  return response;
+};
