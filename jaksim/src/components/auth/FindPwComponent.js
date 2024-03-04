@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const FormWrap = styled.form`
@@ -26,28 +26,42 @@ const FindPwButton = styled.button`
   font-weight: 700;
   font-size: 15px;
   padding: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #ffffff;
-  background-color: #dddddd;
+  background-color: ${(props) => props.color};
   border: none;
-  cursor: pointer;
+  cursor: ${(props) => props.cursor};
 `;
 
 const ErrorWrap = styled.div`
   width: 100%;
   font-size: 13px;
   font-weight: 700;
-  margin-bottom: 20px;
   color: #f05650;
 `;
 
 const FindPwComponent = () => {
+  const [email, setEmail] = useState('');
+
   return (
     <FormWrap>
       <InputWrap>
-        <FindPwInput type="email" placeholder="이메일" />
+        <FindPwInput
+          value={email}
+          type="email"
+          placeholder="이메일"
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </InputWrap>
-      <FindPwButton type="submit">안내메일 전송</FindPwButton>
+      <FindPwButton
+        disabled={email.length > 0 ? false : true}
+        type="submit"
+        color={email.length > 0 ? '#000000' : '#DDDDDD'}
+        cursor={email.length > 0 ? 'pointer' : 'default'}
+      >
+        안내메일 전송
+      </FindPwButton>
+      {/* <ErrorWrap>존재하지 않는 이메일입니다.</ErrorWrap> */}
     </FormWrap>
   );
 };
