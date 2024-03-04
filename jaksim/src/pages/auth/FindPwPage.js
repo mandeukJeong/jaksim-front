@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Logo from './../../assets/img/logo.png';
 import FindPwComponent from '../../components/auth/FindPwComponent';
 import ModalComponent from '../../components/common/ModalComponent';
+import { changModalText } from '../../store/modal';
 
 const FindPwWrap = styled.div`
   width: 100%;
@@ -39,6 +41,14 @@ const GuideMessage = styled.p`
 `;
 
 const FindPwPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      changModalText({ message: '이메일이 전송 되었습니다.', btnText: '확인' })
+    );
+  }, [dispatch]);
+
   return (
     <>
       <ModalComponent />

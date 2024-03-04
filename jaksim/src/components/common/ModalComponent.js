@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const ModalWrap = styled.div`
   position: absolute;
@@ -39,11 +40,13 @@ const ContentWrap = styled.div`
 `;
 
 const ModalComponent = () => {
+  const modalContent = useSelector((state) => state.modal);
+
   return (
     <ModalWrap>
       <ContentWrap>
-        <p>이메일이 전송 되었습니다.</p>
-        <button>확인</button>
+        <p>{modalContent.message}</p>
+        <button>{modalContent.btnText}</button>
       </ContentWrap>
     </ModalWrap>
   );
