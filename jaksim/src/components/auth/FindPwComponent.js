@@ -87,7 +87,7 @@ const FindPwComponent = () => {
       >
         안내메일 전송
       </FindPwButton>
-      <ErrorWrap>{errorMessage}</ErrorWrap>
+      {errorMessage && <ErrorWrap>{errorMessage}</ErrorWrap>}
     </FormWrap>
   );
 };

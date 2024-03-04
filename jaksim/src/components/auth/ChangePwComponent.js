@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import styled from 'styled-components';
 
 const FormWrap = styled.form`
@@ -31,10 +31,9 @@ const ChangePwButton = styled.button`
   padding: 16px;
   margin-bottom: 20px;
   color: #ffffff;
-  background-color: #dddddd;
-  /* background-color: ${(props) => props.color}; */
+  background-color: ${(props) => props.color};
   border: none;
-  /* cursor: ${(props) => props.cursor}; */
+  cursor: ${(props) => props.cursor};
 `;
 
 const ErrorWrap = styled.div`
@@ -44,14 +43,78 @@ const ErrorWrap = styled.div`
   color: #f05650;
 `;
 
+const changePwReducer = (state, action) => {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+};
+
 const ChangePwComponent = () => {
+  const [state, dispatch] = useReducer(changePwReducer, {
+    password: '',
+    passwordConfirm: '',
+  });
+
+  const { password, passwordConfirm } = state;
+
+  const onChange = (e) => {
+    dispatch(e.target);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    // TODO: 비밀번호 검증 테스트
+
+    // 비밀번호 확인이 일치하지 않을 경우
+    if (password !== passwordConfirm) {
+      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+  };
+
+  const [errorMessage, setErrorMessage] = useState(null);
   return (
     <FormWrap>
       <InputWrap>
-        <ChangePwInput type="password" placeholder="새 비밀번호" />
-        <ChangePwInput type="password" placeholder="새 비밀번호 확인" />
+        <ChangePwInput
+          name="password"
+          value={password}
+          type="password"
+          placeholder="새 비밀번호"
+          autoComplete="off"
+          onChange={onChange}
+        />
+        <ChangePwInput
+          name="passwordConfirm"
+          value={passwordConfirm}
+          type="password"
+          placeholder="새 비밀번호 확인"
+          autoComplete="off"
+          onChange={onChange}
+        />
       </InputWrap>
-      <ChangePwButton type="submit">비밀번호 변경</ChangePwButton>
+      <ChangePwButton
+        type="submit"
+        disabled={
+          password.length > 0 && passwordConfirm.length > 0 ? false : true
+        }
+        color={
+          password.length > 0 && passwordConfirm.length > 0
+            ? '#000000'
+            : '#DDDDDD'
+        }
+        cursor={
+          password.length > 0 && passwordConfirm.length > 0
+            ? 'pointer'
+            : 'default'
+        }
+        onClick={onSubmit}
+      >
+        비밀번호 변경
+      </ChangePwButton>
+      {errorMessage && <ErrorWrap>{errorMessage}</ErrorWrap>}
     </FormWrap>
   );
 };
