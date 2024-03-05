@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -42,15 +43,24 @@ const CategoryWrap = styled.div`
 
 const MenuWrap = styled.div`
   display: flex;
+  align-items: center;
   gap: 30px;
   a {
     text-decoration: none;
     color: #000000;
     font-size: 14px;
   }
+
+  button {
+    border: none;
+    background-color: inherit;
+    color: #000000;
+    font-size: 14px;
+  }
 `;
 
 const HeaderComponent = () => {
+  const user = useSelector((state) => state.user);
   return (
     <HeaderWrap>
       <SelectWrap>
@@ -61,8 +71,16 @@ const HeaderComponent = () => {
         </CategoryWrap>
       </SelectWrap>
       <MenuWrap>
-        <Link to="/register">회원가입</Link>
-        <Link to="/login">로그인</Link>
+        {user.isLogin ? (
+          <Link to="/">{user.userInfo.nickname}</Link>
+        ) : (
+          <Link to="/register">회원가입</Link>
+        )}
+        {user.isLogin ? (
+          <button>로그아웃</button>
+        ) : (
+          <Link to="/login">로그인</Link>
+        )}
       </MenuWrap>
     </HeaderWrap>
   );
