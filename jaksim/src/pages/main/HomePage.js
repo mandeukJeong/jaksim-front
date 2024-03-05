@@ -139,41 +139,12 @@ const JoinWrap = styled.div`
   }
 `;
 
-const Circle = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  position: absolute;
-  background-color: ${(props) => props.color};
-  top: ${(props) => props.top};
-  bottom: ${(props) => props.bottom};
-  left: ${(props) => props.left};
-  right: ${(props) => props.right};
-  border: ${(props) => (props.border ? `1px solid ${props.border}` : '')};
-  z-index: ${(props) => props.index};
-`;
-
-const DesignWrap = styled.div`
-  width: 100%;
-  height: 150px;
-  background-color: white;
-`;
-
 const HomePage = () => {
   return (
     <MainWrap>
       <HeaderComponent />
       <IconWrap />
       <IntroduceWrap>
-        <Circle color="#FEC03A" right="150px" bottom="-20px" />
-        <Circle border="#FEC03A" right="200px" bottom="-50px" />
-        <Circle border="#AD9AF5" left="220px" top="150px" />
-        <Circle
-          color="rgba(104, 79, 202, 0.4)"
-          left="270px"
-          top="200px"
-          index="1"
-        />
         <img src={JayImg} alt="Jay" />
         <IntroduceTextWrap>
           <p>
@@ -219,11 +190,7 @@ const HomePage = () => {
           계속 성장 하세요!
         </p>
         <Link to="/register">5초만에 작심하루러 ✍🏻</Link>
-        <Circle color="#FFD4BD80" right="80px" bottom="80px" />
-        <Circle color="#684FCA" left="150px" bottom="-50px" />
-        <Circle color="#FEC03A" left="200px" bottom="-80px" />
       </JoinWrap>
-      <DesignWrap />
     </MainWrap>
   );
 };
