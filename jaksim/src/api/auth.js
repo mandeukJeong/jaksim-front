@@ -38,3 +38,8 @@ export const changePassword = async (password) => {
   const response = await jaksimApi.put('/user/password', { password });
   return response;
 };
+
+export const getUser = async () => {
+  const response = await jaksimApi.get('/user');
+  return response;
+};

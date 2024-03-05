@@ -6,6 +6,8 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../../api/auth';
 import { getCookie, setCookie, removeCookie } from '../../utils/cookie';
 import jaksimApi from '../../api';
+import { changeUserInfo } from '../../store/user';
+import { useDispatch } from 'react-redux';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -75,6 +77,7 @@ const loginReducer = (state, action) => {
 };
 
 const LoginComponent = () => {
+  const userDispatch = useDispatch();
   const navigate = useNavigate();
   const [saveColor, setSaveColor] = useState('#9e9e9e');
   const [isIdSave, setIsIdSave] = useState(false);
@@ -122,6 +125,14 @@ const LoginComponent = () => {
           jaksimApi.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${response.data.accessToken}`;
+          userDispatch(
+            changeUserInfo({
+              isLogin: true,
+              email: response.data.email,
+              eventCheck: response.data.eventCheck,
+              nickname: response.data.nickname,
+            })
+          );
           navigate('/');
         }
       })
