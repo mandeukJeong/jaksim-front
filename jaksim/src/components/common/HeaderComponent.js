@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../api/auth';
+import { changeUserInfo } from '../../store/user';
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -56,11 +58,32 @@ const MenuWrap = styled.div`
     background-color: inherit;
     color: #000000;
     font-size: 14px;
+    cursor: pointer;
   }
 `;
 
 const HeaderComponent = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
+  const onLogout = () => {
+    logout()
+      .then((response) => {
+        if (response.status === 200) {
+          localStorage.removeItem('token');
+          dispatch(
+            changeUserInfo({
+              isLogin: false,
+              email: '',
+              eventCheck: null,
+              nickname: '',
+            })
+          );
+        }
+      })
+      .catch((e) => console.log(e));
+  };
+
   return (
     <HeaderWrap>
       <SelectWrap>
@@ -77,7 +100,7 @@ const HeaderComponent = () => {
           <Link to="/register">회원가입</Link>
         )}
         {user.isLogin ? (
-          <button>로그아웃</button>
+          <button onClick={onLogout}>로그아웃</button>
         ) : (
           <Link to="/login">로그인</Link>
         )}

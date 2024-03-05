@@ -19,7 +19,6 @@ const App = () => {
       ] = `Bearer ${localStorage.getItem('token')}`;
       getUser()
         .then((response) => {
-          console.log(response);
           dispatch(
             changeUserInfo({
               isLogin: true,

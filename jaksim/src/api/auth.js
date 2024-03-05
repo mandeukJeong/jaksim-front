@@ -43,3 +43,8 @@ export const getUser = async () => {
   const response = await jaksimApi.get('/user');
   return response;
 };
+
+export const logout = async () => {
+  const response = await jaksimApi.get('/user/logout');
+  return response;
+};
