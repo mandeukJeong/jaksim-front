@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import PublicRoute from './pages/PublicRoute';
 import HomePage from './pages/main/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -37,10 +38,12 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/findpw" element={<FindPwPage />} />
-      <Route path="/changepw" element={<ChangePwPage />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/findpw" element={<FindPwPage />} />
+        <Route path="/changepw" element={<ChangePwPage />} />
+      </Route>
     </Routes>
   );
 };
