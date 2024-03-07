@@ -5,6 +5,8 @@ import Logo from './../../assets/img/logo.png';
 import NaverLogin from './../../assets/img/btn_naver.png';
 import KakaoLogin from './../../assets/img/btn_kakao.png';
 import RegisterComponent from '../../components/auth/RegisterComponent';
+import ModalComponent from '../../components/common/ModalComponent';
+import { useSelector } from 'react-redux';
 
 const RegisterWrap = styled.div`
   width: 100%;
@@ -51,23 +53,27 @@ const SnsWrap = styled.div`
 `;
 
 const RegisterPage = () => {
+  const isModalShow = useSelector((state) => state.modal.isShow);
   return (
-    <RegisterWrap>
-      <ContentWrap>
-        <Link to="/">
-          <img src={Logo} alt="홈으로" />
-        </Link>
-        <h3>목표를 위한 걸음, 작심하루가 도와줄게요!</h3>
-        <RegisterComponent />
-        <SnsWrap>
-          <p>SNS 계정으로 가입</p>
-          <div>
-            <img src={NaverLogin} alt="네이버 로그인" />
-            <img src={KakaoLogin} alt="카카오 로그인" />
-          </div>
-        </SnsWrap>
-      </ContentWrap>
-    </RegisterWrap>
+    <>
+      {isModalShow && <ModalComponent />}
+      <RegisterWrap>
+        <ContentWrap>
+          <Link to="/">
+            <img src={Logo} alt="홈으로" />
+          </Link>
+          <h3>목표를 위한 걸음, 작심하루가 도와줄게요!</h3>
+          <RegisterComponent />
+          <SnsWrap>
+            <p>SNS 계정으로 가입</p>
+            <div>
+              <img src={NaverLogin} alt="네이버 로그인" />
+              <img src={KakaoLogin} alt="카카오 로그인" />
+            </div>
+          </SnsWrap>
+        </ContentWrap>
+      </RegisterWrap>
+    </>
   );
 };
 

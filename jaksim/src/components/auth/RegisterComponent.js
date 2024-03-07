@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { register } from '../../api/auth';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { changeModalText, onModalShow } from '../../store/modal';
 
 const FormWrap = styled.form`
   width: 100%;
@@ -95,7 +96,7 @@ const registerReducer = (state, action) => {
 };
 
 const RegisterComponent = () => {
-  const navigate = useNavigate();
+  const userDispatch = useDispatch();
   const [checkColor, setCheckColor] = useState({
     serviceCheck: '#737373',
     personalCheck: '#737373',
@@ -181,9 +182,14 @@ const RegisterComponent = () => {
       .then((response) => {
         if (response.status === 201) {
           setErrorMessage(null);
-          // TODO: 추후 모달창으로 변경
-          alert('회원가입 성공');
-          navigate('/login');
+          userDispatch(
+            changeModalText({
+              subject: 'register',
+              message: '가입이 완료되었습니다.',
+              btnText: '확인',
+            })
+          );
+          userDispatch(onModalShow(true));
         }
       })
       .catch((e) => {

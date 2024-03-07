@@ -53,6 +53,7 @@ const ModalComponent = () => {
         navigate('/changepw');
         break;
       case 'changepw':
+      case 'register':
         dispatch(onModalShow(false));
         navigate('/login');
         break;
