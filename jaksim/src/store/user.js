@@ -8,17 +8,19 @@ const user = createSlice({
       email: '',
       eventCheck: null,
       nickname: '',
+      authId: null,
     },
   },
   reducers: {
     changeUserInfo(
       state,
-      { payload: { isLogin, email, eventCheck, nickname } }
+      { payload: { isLogin, email, eventCheck, nickname, authId } }
     ) {
       state.isLogin = isLogin;
       state.userInfo.email = email;
       state.userInfo.eventCheck = eventCheck;
       state.userInfo.nickname = nickname;
+      state.userInfo.authId = authId;
     },
   },
 });

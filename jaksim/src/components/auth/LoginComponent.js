@@ -131,6 +131,7 @@ const LoginComponent = () => {
               email: response.data.email,
               eventCheck: response.data.eventCheck,
               nickname: response.data.nickname,
+              authId: response.data.authId,
             })
           );
           navigate('/');
