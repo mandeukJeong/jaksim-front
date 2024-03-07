@@ -1,7 +1,7 @@
-import jaksimApi from './index';
+import { privateApi, publicApi } from './index';
 
 export const login = async (email, password) => {
-  const response = await jaksimApi.post('/user/login', { email, password });
+  const response = await publicApi.post('/user/login', { email, password });
   return response;
 };
 
@@ -13,7 +13,7 @@ export const register = async (
   personalCheck,
   eventCheck
 ) => {
-  const response = await jaksimApi.post('/user', {
+  const response = await publicApi.post('/user', {
     email,
     nickname,
     password,
@@ -25,26 +25,26 @@ export const register = async (
 };
 
 export const findPw = async (email) => {
-  const response = await jaksimApi.post('/user/email', { email });
+  const response = await publicApi.post('/user/email', { email });
   return response;
 };
 
 export const checkAuth = async (verifyNumber) => {
-  const response = await jaksimApi.post('/user/auth', { verifyNumber });
+  const response = await publicApi.post('/user/auth', { verifyNumber });
   return response;
 };
 
 export const changePassword = async (password) => {
-  const response = await jaksimApi.put('/user/password', { password });
+  const response = await publicApi.put('/user/password', { password });
   return response;
 };
 
 export const getUser = async () => {
-  const response = await jaksimApi.get('/user');
+  const response = await privateApi.get('/user');
   return response;
 };
 
 export const logout = async () => {
-  const response = await jaksimApi.get('/user/logout');
+  const response = await privateApi.get('/user/logout');
   return response;
 };

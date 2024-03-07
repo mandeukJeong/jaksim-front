@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { login } from '../../api/auth';
 import { getCookie, setCookie, removeCookie } from '../../utils/cookie';
-import jaksimApi from '../../api';
+import { privateApi } from '../../api';
 import { changeUserInfo } from '../../store/user';
 import { useDispatch } from 'react-redux';
 
@@ -122,7 +122,7 @@ const LoginComponent = () => {
         if (response.status === 200) {
           setErrorMessage(null);
           localStorage.setItem('token', response.data.accessToken);
-          jaksimApi.defaults.headers.common[
+          privateApi.defaults.headers.common[
             'Authorization'
           ] = `Bearer ${response.data.accessToken}`;
           userDispatch(

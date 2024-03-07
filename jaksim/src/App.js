@@ -7,7 +7,6 @@ import RegisterPage from './pages/auth/RegisterPage';
 import FindPwPage from './pages/auth/FindPwPage';
 import ChangePwPage from './pages/auth/ChangePwPage';
 import { getUser } from './api/auth';
-import jaksimApi from './api';
 import { changeUserInfo } from './store/user';
 import { useDispatch } from 'react-redux';
 
@@ -15,9 +14,6 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      jaksimApi.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${localStorage.getItem('token')}`;
       getUser()
         .then((response) => {
           dispatch(
