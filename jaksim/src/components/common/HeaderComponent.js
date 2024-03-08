@@ -152,7 +152,10 @@ const HeaderComponent = () => {
               </Link>
             </li>
             <li>
-              <Link to="/" onClick={() => setIsRenderMenu(!isRenderMenu)}>
+              <Link
+                to="/board/free"
+                onClick={() => setIsRenderMenu(!isRenderMenu)}
+              >
                 커뮤니티
               </Link>
             </li>

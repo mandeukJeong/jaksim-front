@@ -6,6 +6,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import FindPwPage from './pages/auth/FindPwPage';
 import ChangePwPage from './pages/auth/ChangePwPage';
+import FreeBoardPage from './pages/board/FreeBoardPage';
 import { getUser } from './api/auth';
 import { changeUserInfo } from './store/user';
 import { useDispatch } from 'react-redux';
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/findpw" element={<FindPwPage />} />
         <Route path="/changepw" element={<ChangePwPage />} />
       </Route>
+      <Route path="/board/free" element={<FreeBoardPage />} />
     </Routes>
   );
 };
