@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import HeaderComponent from './../../components/common/HeaderComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 const MainWrap = styled.div`
   width: 100%;
@@ -42,7 +45,7 @@ const ProfileWrap = styled.div`
 `;
 
 const ContentWrap = styled.div`
-  margin-top: 90px;
+  margin-top: 70px;
   padding: 40px 0;
   display: flex;
   width: 90%;
@@ -65,7 +68,7 @@ const MenuWrap = styled.div`
   }
 `;
 
-const WriteWrap = styled.div`
+const WriteWrap = styled.form`
   width: 88%;
 `;
 
@@ -88,9 +91,72 @@ const CategoryWrap = styled.div`
   }
 `;
 
-const TitleWrap = styled.div``;
+const TitleWrap = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  select {
+    width: 15%;
+    padding: 10px 20px;
+    text-align: center;
+    border: 1px solid #0000004d;
+  }
+
+  input {
+    width: 85%;
+    padding: 10px;
+    border: 1px solid #0000004d;
+
+    &::placeholder {
+      color: #000000;
+    }
+  }
+`;
+
+const EditorWrap = styled.div`
+  margin-bottom: 20px;
+
+  .wrapper-class {
+    width: 100%;
+    border: 1px solid #0000004d;
+  }
+
+  .editor {
+    border-top: 1px solid #0000004d;
+    padding: 10px 20px;
+    height: 50vh;
+  }
+
+  .toolbar-class {
+    background: #e3e3e3cc;
+    margin: 0;
+  }
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+  button {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 35px;
+    color: ${(props) => props.color};
+    background-color: ${(props) => props.backColor};
+  }
+`;
 
 const BoardWritePage = () => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+  };
+
   return (
     <>
       <HeaderComponent />
@@ -134,6 +200,52 @@ const BoardWritePage = () => {
               </select>
               <input type="text" placeholder="제목을 입력해 주세요." />
             </TitleWrap>
+            <EditorWrap>
+              <Editor
+                wrapperClassName="wrapper-class"
+                editorClassName="editor"
+                toolbarClassName="toolbar-class"
+                toolbar={{
+                  options: [
+                    'inline',
+                    'fontSize',
+                    'list',
+                    'textAlign',
+                    'history',
+                  ],
+                  list: { inDropdowm: true },
+                  textAlign: { inDropdowm: true },
+                  link: { inDropdowm: true },
+                  history: { inDropdowm: true },
+                }}
+                placeholder="이 게시판은 공지사항을 작성할 수 있는 하루안내입니다."
+                localization={{
+                  locale: 'ko',
+                }}
+                editorState={editorState}
+                onEditorStateChange={onEditorStateChange}
+              />
+            </EditorWrap>
+            <ButtonWrap>
+              <button
+                style={{
+                  color: '#ffffff',
+                  backgroundColor: '#000000CC',
+                  border: 'none',
+                }}
+              >
+                등록
+              </button>
+              <button
+                style={{
+                  color: '#000000',
+                  backgroundColor: '#FFFFFFCC',
+                  border: '1px solid #0000004D',
+                }}
+              >
+                취소
+              </button>
+            </ButtonWrap>
           </WriteWrap>
         </ContentWrap>
       </MainWrap>
