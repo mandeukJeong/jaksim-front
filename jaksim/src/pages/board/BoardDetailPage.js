@@ -91,15 +91,126 @@ const CategoryWrap = styled.div`
 const TitleWrap = styled.div`
   width: 100%;
   display: flex;
-  padding: 15px 30px;
+  justify-content: space-between;
+  padding: 15px;
   align-items: center;
   border-top: 1px solid #d9d9d9;
   border-bottom: 1px solid #d9d9d9;
 `;
 
-const EditorWrap = styled.div``;
+const TitleUserWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13.5px;
 
-const CommentWrap = styled.div``;
+  p {
+    margin-bottom: 3px;
+  }
+
+  h4 {
+    color: #53bcb6;
+  }
+`;
+
+const TitleInfoWrap = styled.div`
+  display: flex;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #5f5f5f;
+
+  div {
+    display: flex;
+    gap: 3px;
+
+    &:first-child {
+      color: #000000;
+      font-weight: 500;
+
+      span {
+        color: #4f59ca;
+      }
+    }
+  }
+`;
+
+const EditorWrap = styled.div`
+  padding: 30px 0;
+  font-size: 13px;
+  line-height: 20px;
+  border-bottom: 1px solid #a3a3a3;
+`;
+
+const CommentWrap = styled.div`
+  background-color: #f8f8f8;
+
+  li {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 30px;
+    border-bottom: 1px solid #a3a3a3;
+    line-height: 20px;
+
+    strong {
+      font-size: 14px;
+      color: #53bcb6;
+      font-weight: 500;
+    }
+
+    button {
+      border: none;
+      background-color: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4f59ca;
+      cursor: pointer;
+    }
+  }
+`;
+
+const CommentWriteWrap = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #a3a3a3;
+
+  input {
+    width: 90%;
+    height: 100px;
+    border: 1px solid #bdbdbd;
+  }
+
+  button {
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    padding: 20px 25px;
+    cursor: pointer;
+  }
+`;
+
+const ChangePageWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    font-size: 15px;
+    padding: 0 20px;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+    border-right: 1px solid #000000;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+`;
 
 const BoardDetailPage = () => {
   return (
@@ -140,11 +251,11 @@ const BoardDetailPage = () => {
               <p>서로 힘이 되는 친구가 되어주세요</p>
             </CategoryWrap>
             <TitleWrap>
-              <div>
+              <TitleUserWrap>
                 <FontAwesomeIcon
                   icon={faUser}
                   style={{
-                    backgroundColor: '#000000',
+                    backgroundColor: '#D9D9D9',
                     fontSize: '20px',
                     borderRadius: '50%',
                     padding: '8px 9.25px',
@@ -155,8 +266,8 @@ const BoardDetailPage = () => {
                   <p>소통할 고3 수험생 구해요~</p>
                   <h4>만득잉</h4>
                 </div>
-              </div>
-              <div>
+              </TitleUserWrap>
+              <TitleInfoWrap>
                 <div>
                   <h3>댓글</h3>
                   <span>2</span>
@@ -166,7 +277,7 @@ const BoardDetailPage = () => {
                   <span>10</span>
                 </div>
                 <p>2024.03.13 12:16</p>
-              </div>
+              </TitleInfoWrap>
             </TitleWrap>
             <EditorWrap>
               <p>
@@ -179,29 +290,29 @@ const BoardDetailPage = () => {
               </p>
             </EditorWrap>
             <CommentWrap>
-              <div>
+              <CommentWriteWrap>
                 <FontAwesomeIcon
                   icon={faUser}
                   style={{
-                    backgroundColor: '#000000',
-                    fontSize: '20px',
+                    backgroundColor: '#D9D9D9',
+                    fontSize: '18px',
                     borderRadius: '50%',
-                    padding: '8px 9.25px',
+                    padding: '5px 6.13px',
                     color: 'FFFFFF',
                   }}
                 />
                 <input type="text" />
                 <button>등록</button>
-              </div>
+              </CommentWriteWrap>
               <ul>
                 <li>
                   <FontAwesomeIcon
                     icon={faUser}
                     style={{
-                      backgroundColor: '#000000',
-                      fontSize: '20px',
+                      backgroundColor: '#D9D9D9',
+                      fontSize: '18px',
                       borderRadius: '50%',
-                      padding: '8px 9.25px',
+                      padding: '5px 6.13px',
                       color: 'FFFFFF',
                     }}
                   />
@@ -213,10 +324,34 @@ const BoardDetailPage = () => {
                     <p>만득님, 안녕하세요! 저랑 소통해요~</p>
                   </div>
                 </li>
+                <li style={{ paddingLeft: '45px' }}>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    style={{
+                      backgroundColor: '#D9D9D9',
+                      fontSize: '18px',
+                      borderRadius: '50%',
+                      padding: '5px 6.13px',
+                      color: 'FFFFFF',
+                    }}
+                  />
+                  <div>
+                    <p>
+                      <strong>만득잉</strong> 2024.03.14 12:58{' '}
+                      <button>답글</button>
+                    </p>
+                    <p>안녕하세요~~ 좋아요 ㅎㅎ</p>
+                  </div>
+                </li>
               </ul>
             </CommentWrap>
           </BoardWrap>
         </ContentWrap>
+        <ChangePageWrap>
+          <button>이전글</button>
+          <button>목록</button>
+          <button>다음글</button>
+        </ChangePageWrap>
       </MainWrap>
     </>
   );
